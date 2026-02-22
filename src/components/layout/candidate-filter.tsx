@@ -13,16 +13,12 @@ export function CandidateFilter() {
   const searchParams = useSearchParams()
   const pathname = usePathname()
 
-  const currentValue = (searchParams.get("candidate") ?? "all") as CandidateFilterType
+  const currentValue = (searchParams.get("candidate") ?? "charlles") as CandidateFilterType
 
   const handleChange = useCallback(
     (value: CandidateFilterType) => {
       const params = new URLSearchParams(searchParams.toString())
-      if (value === "all") {
-        params.delete("candidate")
-      } else {
-        params.set("candidate", value)
-      }
+      params.set("candidate", value)
       const query = params.toString()
       router.push(query ? `${pathname}?${query}` : pathname)
     },

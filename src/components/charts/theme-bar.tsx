@@ -51,10 +51,8 @@ interface ThemeBarChartProps {
 export function ThemeBarChart({ themes, candidateFilter }: ThemeBarChartProps) {
   const data = toBarChartData(themes)
 
-  const showCandidateA =
-    candidateFilter === "all" || candidateFilter === "charlles"
-  const showCandidateB =
-    candidateFilter === "all" || candidateFilter === "sheila"
+  const showCandidateA = candidateFilter === "charlles"
+  const showCandidateB = candidateFilter === "sheila"
 
   return (
     <div style={{ height: 400 }}>

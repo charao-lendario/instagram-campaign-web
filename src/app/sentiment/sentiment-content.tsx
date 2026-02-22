@@ -23,7 +23,7 @@ function getDefaultEndDate(): string {
 
 export function SentimentContent() {
   const searchParams = useSearchParams()
-  const candidateFilter = (searchParams.get("candidate") ?? "all") as CandidateFilter
+  const candidateFilter = (searchParams.get("candidate") ?? "charlles") as CandidateFilter
 
   const [startDate, setStartDate] = useState(getDefaultStartDate)
   const [endDate, setEndDate] = useState(getDefaultEndDate)

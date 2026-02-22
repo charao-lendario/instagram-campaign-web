@@ -123,18 +123,6 @@ function SinglePie({
 }
 
 export function ThemePieChart({ themes, candidateFilter }: ThemePieChartProps) {
-  if (candidateFilter === "all") {
-    const dataA = toPieData(themes, CANDIDATE_A_USERNAME)
-    const dataB = toPieData(themes, CANDIDATE_B_USERNAME)
-
-    return (
-      <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
-        <SinglePie data={dataA} title={CANDIDATE_A_DISPLAY} />
-        <SinglePie data={dataB} title={CANDIDATE_B_DISPLAY} />
-      </div>
-    )
-  }
-
   const username =
     candidateFilter === "charlles" ? CANDIDATE_A_USERNAME : CANDIDATE_B_USERNAME
   const displayName =

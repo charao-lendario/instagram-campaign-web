@@ -29,7 +29,7 @@ function sortByPriority(suggestions: Suggestion[]): Suggestion[] {
 
 export function InsightsContent() {
   const searchParams = useSearchParams()
-  const candidateFilter = (searchParams.get("candidate") ?? "all") as CandidateFilter
+  const candidateFilter = (searchParams.get("candidate") ?? "charlles") as CandidateFilter
 
   // Get overview data to resolve candidate UUID
   const { data: overviewData } = useOverview()

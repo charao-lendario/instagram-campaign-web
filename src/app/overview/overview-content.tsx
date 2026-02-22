@@ -5,7 +5,11 @@ import { useSearchParams } from "next/navigation"
 import { useOverview } from "@/hooks/use-overview"
 import { triggerScraping } from "@/lib/api"
 import type { CandidateFilter } from "@/lib/constants"
-import { CANDIDATE_A_USERNAME } from "@/lib/constants"
+import {
+  CANDIDATE_A_USERNAME,
+  CANDIDATE_A_CARGO,
+  CANDIDATE_B_CARGO,
+} from "@/lib/constants"
 import { LoadingSkeleton } from "@/components/shared/loading-skeleton"
 import { ErrorMessage } from "@/components/shared/error-message"
 import { EmptyState } from "@/components/shared/empty-state"
@@ -16,7 +20,7 @@ import { Loader2 } from "lucide-react"
 
 export function OverviewContent() {
   const searchParams = useSearchParams()
-  const candidateFilter = (searchParams.get("candidate") ?? "all") as CandidateFilter
+  const candidateFilter = (searchParams.get("candidate") ?? "charlles") as CandidateFilter
   const { data, loading, error, refetch } = useOverview()
 
   const [triggering, setTriggering] = useState(false)
@@ -43,15 +47,10 @@ export function OverviewContent() {
     return (
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-white">Painel de Campanha</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Carregando dados...
-        </p>
+        <p className="mt-1 text-sm text-muted-foreground">Carregando dados...</p>
         <div className="mt-6 space-y-6">
           <LoadingSkeleton variant="card" />
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <LoadingSkeleton variant="card" />
-            <LoadingSkeleton variant="card" />
-          </div>
+          <LoadingSkeleton variant="card" />
         </div>
       </div>
     )
@@ -61,9 +60,6 @@ export function OverviewContent() {
     return (
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-white">Painel de Campanha</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Saúde geral da campanha do casal.
-        </p>
         <div className="mt-6">
           <ErrorMessage error={error} onRetry={refetch} />
         </div>
@@ -75,9 +71,6 @@ export function OverviewContent() {
     return (
       <div>
         <h1 className="text-2xl font-bold tracking-tight text-white">Painel de Campanha</h1>
-        <p className="mt-1 text-sm text-muted-foreground">
-          Saúde geral da campanha do casal.
-        </p>
         <div className="mt-6">
           <EmptyState
             message="Nenhum dado disponível. Inicie uma coleta de dados."
@@ -90,29 +83,15 @@ export function OverviewContent() {
               <span>Iniciando coleta...</span>
             </div>
           )}
-          {triggerMessage && (
-            <p className="mt-2 text-center text-sm text-muted-foreground">
-              {triggerMessage}
-            </p>
-          )}
         </div>
       </div>
     )
   }
 
-  // Filter candidates based on CandidateFilter URL param
-  const filteredCandidates = data.candidates.filter((c) => {
-    if (candidateFilter === "all") return true
-    if (candidateFilter === "charlles") return c.username === CANDIDATE_A_USERNAME
-    return c.username !== CANDIDATE_A_USERNAME
-  })
-
-  // Calculate average sentiment across candidates for the summary row
-  const averageSentiment =
-    data.candidates.length > 0
-      ? data.candidates.reduce((sum, c) => sum + c.average_sentiment_score, 0) /
-        data.candidates.length
-      : 0
+  // Show selected candidate
+  const selectedUsername = candidateFilter === "charlles" ? CANDIDATE_A_USERNAME : "delegadasheila"
+  const candidate = data.candidates.find((c) => c.username === selectedUsername)
+  const cargo = candidateFilter === "charlles" ? CANDIDATE_A_CARGO : CANDIDATE_B_CARGO
 
   return (
     <div>
@@ -120,14 +99,12 @@ export function OverviewContent() {
         <div>
           <h1 className="text-2xl font-bold tracking-tight text-white">Painel de Campanha</h1>
           <p className="mt-1 text-sm text-muted-foreground">
-            Análise dos últimos posts de cada candidato no Instagram.
+            {candidate?.display_name} — {cargo} | Análise de {candidate?.total_posts} posts no Instagram
           </p>
         </div>
         <div className="flex items-center gap-3">
           {triggerMessage && (
-            <span className="text-sm text-muted-foreground">
-              {triggerMessage}
-            </span>
+            <span className="text-sm text-muted-foreground">{triggerMessage}</span>
           )}
           <Button
             variant="outline"
@@ -137,26 +114,24 @@ export function OverviewContent() {
             className="border-border/50 bg-secondary/50 text-foreground hover:bg-secondary"
           >
             {triggering && <Loader2 className="h-4 w-4 animate-spin" />}
-            {triggering ? "Executando..." : "Executar Scraping"}
+            {triggering ? "Executando..." : "Atualizar dados"}
           </Button>
         </div>
       </div>
 
-      <div className="mt-6 space-y-6">
-        {/* Summary row */}
-        <SummaryRow
-          totalComments={data.total_comments_analyzed}
-          averageSentiment={averageSentiment}
-          lastScrape={data.last_scrape}
-        />
+      {candidate && (
+        <div className="mt-6 space-y-6">
+          {/* Summary row */}
+          <SummaryRow
+            totalComments={candidate.total_comments}
+            averageSentiment={candidate.average_sentiment_score}
+            lastScrape={data.last_scrape}
+          />
 
-        {/* Candidate metric cards */}
-        <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-          {filteredCandidates.map((candidate) => (
-            <MetricCard key={candidate.candidate_id} candidate={candidate} />
-          ))}
+          {/* Single candidate detail card */}
+          <MetricCard candidate={candidate} />
         </div>
-      </div>
+      )}
     </div>
   )
 }

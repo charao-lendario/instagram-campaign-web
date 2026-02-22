@@ -15,10 +15,9 @@ export const CANDIDATE_B_COLOR_LIGHT = 'var(--color-candidate-b-light)'
 
 export const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000'
 
-export type CandidateFilter = 'all' | 'charlles' | 'sheila'
+export type CandidateFilter = 'charlles' | 'sheila'
 
 export const CANDIDATE_OPTIONS: Array<{ value: CandidateFilter; label: string }> = [
-  { value: 'all', label: 'Ambos' },
   { value: 'charlles', label: 'Charlles Evangelista' },
   { value: 'sheila', label: 'Delegada Sheila' },
 ] as const

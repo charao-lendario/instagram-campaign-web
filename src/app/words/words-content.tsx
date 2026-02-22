@@ -22,22 +22,10 @@ const WordCloudChart = dynamic(
   }
 )
 
-function getFilterLabel(filter: CandidateFilter): string {
-  switch (filter) {
-    case "charlles":
-      return "Charlles Evangelista"
-    case "sheila":
-      return "Delegada Sheila"
-    default:
-      return "Ambos os candidatos"
-  }
-}
-
 export function WordsContent() {
   const searchParams = useSearchParams()
-  const candidateFilter = (searchParams.get("candidate") ?? "all") as CandidateFilter
+  const candidateFilter = (searchParams.get("candidate") ?? "charlles") as CandidateFilter
 
-  // Get overview data to resolve candidate UUID
   const { data: overviewData } = useOverview()
 
   const candidateId =
@@ -51,13 +39,12 @@ export function WordsContent() {
     <div>
       <h1 className="text-2xl font-bold tracking-tight text-white">O Que Falam</h1>
       <p className="mt-1 text-sm text-muted-foreground">
-        As palavras e expressões mais usadas pelo público nos comentários.
+        As expressões e assuntos mais mencionados nos comentários do público.
       </p>
 
-      {/* Subtitle with filter and count */}
       {data && (
         <p className="mt-1 text-xs text-muted-foreground/60">
-          {getFilterLabel(candidateFilter)} — {data.total_unique_words} palavras únicas encontradas
+          {data.total_unique_words} expressões extraídas dos comentários
         </p>
       )}
 
@@ -78,17 +65,17 @@ export function WordsContent() {
               </CardContent>
             </Card>
 
-            {/* Top 20 word list */}
+            {/* Top expressions list */}
             <Card className="mt-4">
               <CardContent className="pt-6">
-                <h3 className="mb-3 text-sm font-medium text-white">Top 20 palavras mais frequentes</h3>
-                <div className="grid grid-cols-2 gap-x-8 gap-y-1 sm:grid-cols-4">
+                <h3 className="mb-3 text-sm font-medium text-white">Expressões mais frequentes</h3>
+                <div className="grid grid-cols-1 gap-y-1 sm:grid-cols-2">
                   {data.words.slice(0, 20).map((word, i) => (
-                    <div key={word.word} className="flex items-center justify-between py-1">
+                    <div key={word.word} className="flex items-center justify-between py-1.5 pr-4">
                       <span className="text-sm text-foreground/80">
                         {i + 1}. {word.word}
                       </span>
-                      <span className="text-xs text-muted-foreground">
+                      <span className="text-xs font-medium text-muted-foreground">
                         {word.count}x
                       </span>
                     </div>

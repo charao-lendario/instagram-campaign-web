@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useSearchParams } from "next/navigation"
-import { ArrowUp, ArrowDown } from "lucide-react"
+import { ArrowUp, ArrowDown, ExternalLink } from "lucide-react"
 import { useOverview } from "@/hooks/use-overview"
 import { fetchPosts } from "@/lib/api"
 import type { CandidateFilter } from "@/lib/constants"
@@ -43,14 +43,14 @@ const SORTABLE_COLUMNS: Array<{
 
 const PAGE_SIZE = 20
 
-function truncateCaption(caption: string, maxLength: number = 80): string {
+function truncateCaption(caption: string, maxLength: number = 40): string {
   if (caption.length <= maxLength) return caption
-  return caption.slice(0, maxLength) + "..."
+  return caption.slice(0, maxLength).trim() + "..."
 }
 
 export function PostsContent() {
   const searchParams = useSearchParams()
-  const candidateFilter = (searchParams.get("candidate") ?? "all") as CandidateFilter
+  const candidateFilter = (searchParams.get("candidate") ?? "charlles") as CandidateFilter
 
   const [sortColumn, setSortColumn] = useState<SortColumn>("comment_count")
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc")
@@ -58,7 +58,6 @@ export function PostsContent() {
   const [loadingMore, setLoadingMore] = useState(false)
   const [currentOffset, setCurrentOffset] = useState(0)
 
-  // Get overview data to resolve candidate UUID
   const { data: overviewData } = useOverview()
 
   const candidateId =
@@ -66,7 +65,6 @@ export function PostsContent() {
       ? getCandidateId(candidateFilter, overviewData.candidates)
       : undefined
 
-  // Fetch the first page reactively via hook
   const { data, loading, error, refetch } = useApiData(
     () =>
       fetchPosts({
@@ -76,10 +74,9 @@ export function PostsContent() {
         limit: PAGE_SIZE,
         offset: 0,
       }),
-[candidateId, sortColumn, sortOrder]
+    [candidateId, sortColumn, sortOrder]
   )
 
-  // Combine first page + extra loaded pages
   const allPosts = data?.posts
     ? [...data.posts, ...extraPosts]
     : []
@@ -93,7 +90,6 @@ export function PostsContent() {
       setSortColumn(column)
       setSortOrder("desc")
     }
-    // Reset pagination when sort changes
     setExtraPosts([])
     setCurrentOffset(0)
   }
@@ -124,7 +120,7 @@ export function PostsContent() {
     <div>
       <h1 className="text-2xl font-bold tracking-tight text-white">Desempenho de Posts</h1>
       <p className="mt-1 text-sm text-muted-foreground">
-        Qual conteúdo funciona melhor — ranking por engajamento e sentimento.
+        Qual conteúdo funciona melhor — clique na legenda para abrir o post no Instagram.
       </p>
 
       <div className="mt-6">
@@ -140,17 +136,16 @@ export function PostsContent() {
 
         {allPosts.length > 0 && (
           <>
-            <div className="rounded-lg border border-border">
+            <div className="overflow-x-auto rounded-lg border border-border">
               <Table>
                 <TableHeader>
                   <TableRow className="border-border hover:bg-secondary/30">
-                    <TableHead>Candidato</TableHead>
-                    <TableHead>Data</TableHead>
-                    <TableHead>Legenda</TableHead>
+                    <TableHead className="w-[100px]">Data</TableHead>
+                    <TableHead className="min-w-[120px]">Legenda</TableHead>
                     {SORTABLE_COLUMNS.map((col) => (
                       <TableHead
                         key={col.key}
-                        className="cursor-pointer select-none"
+                        className="cursor-pointer select-none whitespace-nowrap"
                         onClick={() => handleSort(col.key)}
                       >
                         <span className="flex items-center gap-1">
@@ -170,17 +165,30 @@ export function PostsContent() {
                 <TableBody>
                   {allPosts.map((post) => (
                     <TableRow key={post.post_id} className="border-border hover:bg-secondary/20">
-                      <TableCell className="font-medium">
-                        {post.candidate_username}
+                      <TableCell className="whitespace-nowrap text-xs">
+                        {formatDateMedium(post.posted_at)}
                       </TableCell>
-                      <TableCell>{formatDateMedium(post.posted_at)}</TableCell>
-                      <TableCell
-                        className="max-w-[200px]"
-                        title={post.caption}
-                      >
-                        {truncateCaption(post.caption)}
+                      <TableCell className="max-w-[180px]">
+                        {post.url ? (
+                          <a
+                            href={post.url}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="group flex items-center gap-1 text-blue-400 hover:text-blue-300"
+                            title={post.caption}
+                          >
+                            <span className="truncate text-sm">
+                              {truncateCaption(post.caption)}
+                            </span>
+                            <ExternalLink className="h-3 w-3 shrink-0 opacity-0 group-hover:opacity-100" />
+                          </a>
+                        ) : (
+                          <span className="text-sm" title={post.caption}>
+                            {truncateCaption(post.caption)}
+                          </span>
+                        )}
                       </TableCell>
-                      <TableCell>{post.like_count}</TableCell>
+                      <TableCell>{post.like_count.toLocaleString("pt-BR")}</TableCell>
                       <TableCell>{post.comment_count}</TableCell>
                       <TableCell>
                         {(post.positive_ratio * 100).toFixed(0)}%
@@ -189,9 +197,7 @@ export function PostsContent() {
                         {(post.negative_ratio * 100).toFixed(0)}%
                       </TableCell>
                       <TableCell>
-                        <SentimentBadge
-                          score={post.average_sentiment_score}
-                        />
+                        <SentimentBadge score={post.average_sentiment_score} />
                       </TableCell>
                     </TableRow>
                   ))}

@@ -85,8 +85,6 @@ export function getCandidateId(
   filter: CandidateFilter,
   candidates: CandidateMetrics[]
 ): string | undefined {
-  if (filter === "all") return undefined
-
   const username =
     filter === "charlles" ? CANDIDATE_A_USERNAME : CANDIDATE_B_USERNAME
 

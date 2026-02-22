@@ -39,7 +39,6 @@ function transformData(
 ): ChartDataPoint[] {
   // Filter by candidate if needed
   const filtered = dataPoints.filter((dp) => {
-    if (candidateFilter === "all") return true
     if (candidateFilter === "charlles")
       return dp.candidate_username === CANDIDATE_A_USERNAME
     return dp.candidate_username === CANDIDATE_B_USERNAME
@@ -118,10 +117,8 @@ export function SentimentLineChart({
 }: SentimentLineChartProps) {
   const chartData = transformData(dataPoints, candidateFilter)
 
-  const showCandidateA =
-    candidateFilter === "all" || candidateFilter === "charlles"
-  const showCandidateB =
-    candidateFilter === "all" || candidateFilter === "sheila"
+  const showCandidateA = candidateFilter === "charlles"
+  const showCandidateB = candidateFilter === "sheila"
 
   return (
     <div style={{ height: 400 }}>
