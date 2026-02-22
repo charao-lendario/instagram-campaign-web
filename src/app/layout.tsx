@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Análise de Campanha Instagram",
-  description: "Dashboard de análise para campanhas no Instagram",
+  title: "Inteligência de Campanha 2026",
+  description: "Plataforma de inteligência para campanha eleitoral 2026 — Charlles & Sheila",
 }
 
 export default function RootLayout({

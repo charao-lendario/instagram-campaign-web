@@ -34,15 +34,16 @@ export function ThemesContent() {
     <div>
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Temas</h1>
-          <p className="mt-2 text-muted-foreground">
-            Distribuição de temas por candidato.
+          <h1 className="text-2xl font-bold tracking-tight text-white">Temas Quentes</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Os assuntos que mais aparecem nos comentários dos eleitores.
           </p>
         </div>
         <Button
           variant="outline"
           size="sm"
           onClick={() => setChartMode((m) => (m === "bar" ? "pie" : "bar"))}
+          className="border-border/50 bg-secondary/50 text-foreground hover:bg-secondary"
         >
           {chartMode === "bar" ? "Ver como pizza" : "Ver como barras"}
         </Button>
@@ -58,21 +59,39 @@ export function ThemesContent() {
         )}
 
         {!loading && !error && data && data.themes.length > 0 && (
-          <Card>
-            <CardContent className="pt-6">
-              {chartMode === "bar" ? (
-                <ThemeBarChart
-                  themes={data.themes}
-                  candidateFilter={candidateFilter}
-                />
-              ) : (
-                <ThemePieChart
-                  themes={data.themes}
-                  candidateFilter={candidateFilter}
-                />
-              )}
-            </CardContent>
-          </Card>
+          <>
+            <Card>
+              <CardContent className="pt-6">
+                {chartMode === "bar" ? (
+                  <ThemeBarChart
+                    themes={data.themes}
+                    candidateFilter={candidateFilter}
+                  />
+                ) : (
+                  <ThemePieChart
+                    themes={data.themes}
+                    candidateFilter={candidateFilter}
+                  />
+                )}
+              </CardContent>
+            </Card>
+
+            {/* Theme interpretation */}
+            {data.themes[0] && (
+              <Card className="mt-4">
+                <CardContent className="pt-6">
+                  <p className="text-sm text-muted-foreground">
+                    O tema mais mencionado é <strong className="text-foreground">{data.themes[0].theme}</strong> com{" "}
+                    {data.themes[0].count} menções ({data.themes[0].percentage}%).
+                    {data.themes[1] && (
+                      <> Em segundo lugar vem <strong className="text-foreground">{data.themes[1].theme}</strong> com{" "}
+                      {data.themes[1].count} menções.</>
+                    )}
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+          </>
         )}
       </div>
     </div>

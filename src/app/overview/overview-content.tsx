@@ -42,9 +42,9 @@ export function OverviewContent() {
   if (loading) {
     return (
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Visão Geral</h1>
-        <p className="mt-2 text-muted-foreground">
-          Visão geral das métricas de campanha.
+        <h1 className="text-2xl font-bold tracking-tight text-white">Painel de Campanha</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Carregando dados...
         </p>
         <div className="mt-6 space-y-6">
           <LoadingSkeleton variant="card" />
@@ -60,9 +60,9 @@ export function OverviewContent() {
   if (error) {
     return (
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Visão Geral</h1>
-        <p className="mt-2 text-muted-foreground">
-          Visão geral das métricas de campanha.
+        <h1 className="text-2xl font-bold tracking-tight text-white">Painel de Campanha</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Saúde geral da campanha do casal.
         </p>
         <div className="mt-6">
           <ErrorMessage error={error} onRetry={refetch} />
@@ -74,9 +74,9 @@ export function OverviewContent() {
   if (!data || data.candidates.length === 0) {
     return (
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Visão Geral</h1>
-        <p className="mt-2 text-muted-foreground">
-          Visão geral das métricas de campanha.
+        <h1 className="text-2xl font-bold tracking-tight text-white">Painel de Campanha</h1>
+        <p className="mt-1 text-sm text-muted-foreground">
+          Saúde geral da campanha do casal.
         </p>
         <div className="mt-6">
           <EmptyState
@@ -118,9 +118,9 @@ export function OverviewContent() {
     <div>
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Visão Geral</h1>
-          <p className="mt-2 text-muted-foreground">
-            Visão geral das métricas de campanha.
+          <h1 className="text-2xl font-bold tracking-tight text-white">Painel de Campanha</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Análise dos últimos posts de cada candidato no Instagram.
           </p>
         </div>
         <div className="flex items-center gap-3">
@@ -134,6 +134,7 @@ export function OverviewContent() {
             size="sm"
             onClick={handleTriggerScraping}
             disabled={triggering}
+            className="border-border/50 bg-secondary/50 text-foreground hover:bg-secondary"
           >
             {triggering && <Loader2 className="h-4 w-4 animate-spin" />}
             {triggering ? "Executando..." : "Executar Scraping"}

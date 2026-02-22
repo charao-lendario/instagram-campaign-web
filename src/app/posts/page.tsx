@@ -7,9 +7,9 @@ export default function PostsPage() {
     <Suspense
       fallback={
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Posts</h1>
-          <p className="mt-2 text-muted-foreground">
-            Ranking de posts por engajamento e sentimento.
+          <h1 className="text-2xl font-bold tracking-tight text-white">Desempenho de Posts</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Qual conteúdo funciona melhor — ranking por engajamento e sentimento.
           </p>
           <div className="mt-6">
             <LoadingSkeleton variant="table" />

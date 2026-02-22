@@ -7,9 +7,9 @@ export default function WordsPage() {
     <Suspense
       fallback={
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Nuvem de Palavras</h1>
-          <p className="mt-2 text-muted-foreground">
-            Palavras mais frequentes nos comentários.
+          <h1 className="text-2xl font-bold tracking-tight text-white">O Que Falam</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            As palavras e expressões mais usadas pelo público nos comentários.
           </p>
           <div className="mt-6">
             <LoadingSkeleton variant="chart" />

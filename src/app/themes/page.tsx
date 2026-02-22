@@ -7,9 +7,9 @@ export default function ThemesPage() {
     <Suspense
       fallback={
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Temas</h1>
-          <p className="mt-2 text-muted-foreground">
-            Distribuição de temas por candidato.
+          <h1 className="text-2xl font-bold tracking-tight text-white">Temas Quentes</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Os assuntos que mais aparecem nos comentários dos eleitores.
           </p>
           <div className="mt-6">
             <LoadingSkeleton variant="chart" />

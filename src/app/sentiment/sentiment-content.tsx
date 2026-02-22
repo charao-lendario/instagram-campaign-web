@@ -44,15 +44,18 @@ export function SentimentContent() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold tracking-tight">Linha do Tempo de Sentimento</h1>
-      <p className="mt-2 text-muted-foreground">
-        Evolução do sentimento ao longo do tempo por candidato.
+      <h1 className="text-2xl font-bold tracking-tight text-white">Termômetro Popular</h1>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Como o público reage nos comentários ao longo do tempo.
+      </p>
+      <p className="mt-1 text-xs text-muted-foreground/60">
+        Acima de 0 = mais comentários positivos. Abaixo de 0 = mais comentários negativos.
       </p>
 
       {/* Date range inputs */}
       <Card className="mt-6">
         <CardHeader>
-          <CardTitle className="text-base">Período</CardTitle>
+          <CardTitle className="text-base text-white">Período</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap items-center gap-4">
@@ -65,7 +68,7 @@ export function SentimentContent() {
                 type="date"
                 value={startDate}
                 onChange={(e) => setStartDate(e.target.value)}
-                className="rounded-md border bg-background px-3 py-1.5 text-sm"
+                className="rounded-md border border-border bg-secondary px-3 py-1.5 text-sm text-foreground"
               />
             </div>
             <div className="flex items-center gap-2">
@@ -77,7 +80,7 @@ export function SentimentContent() {
                 type="date"
                 value={endDate}
                 onChange={(e) => setEndDate(e.target.value)}
-                className="rounded-md border bg-background px-3 py-1.5 text-sm"
+                className="rounded-md border border-border bg-secondary px-3 py-1.5 text-sm text-foreground"
               />
             </div>
           </div>
@@ -87,8 +90,8 @@ export function SentimentContent() {
       {/* Chart area */}
       <div className="mt-6">
         {loading && (
-          <div className="rounded-lg border p-6">
-            <div className="h-[400px] animate-pulse rounded-md bg-accent" />
+          <div className="rounded-lg border border-border p-6">
+            <div className="h-[400px] animate-pulse rounded-md bg-secondary" />
           </div>
         )}
 

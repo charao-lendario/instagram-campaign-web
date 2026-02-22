@@ -77,11 +77,11 @@ export function InsightsContent() {
     <div>
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">
-            Insights Estratégicos
+          <h1 className="text-2xl font-bold tracking-tight text-white">
+            Estratégia de Campanha
           </h1>
-          <p className="mt-2 text-muted-foreground">
-            Sugestões estratégicas baseadas em dados.
+          <p className="mt-1 text-sm text-muted-foreground">
+            Recomendações geradas por IA baseadas na análise dos comentários reais.
           </p>
         </div>
         <Button
@@ -89,6 +89,7 @@ export function InsightsContent() {
           size="sm"
           onClick={handleRefresh}
           disabled={refreshing || isLoading}
+          className="border-border/50 bg-secondary/50 text-foreground hover:bg-secondary"
         >
           {refreshing ? (
             <>
@@ -96,14 +97,14 @@ export function InsightsContent() {
               Gerando...
             </>
           ) : (
-            "Atualizar sugestões"
+            "Gerar novas sugestões"
           )}
         </Button>
       </div>
 
       {/* Last generated timestamp */}
       {displayData && (
-        <p className="mt-2 text-xs text-muted-foreground">
+        <p className="mt-2 text-xs text-muted-foreground/60">
           Gerado em: {formatDate(displayData.generated_at)} |{" "}
           {displayData.data_snapshot.total_comments_analyzed} comentários
           analisados
@@ -139,8 +140,8 @@ export function InsightsContent() {
           displayData &&
           sortedSuggestions.length === 0 && (
             <EmptyState
-              message="Dados insuficientes para gerar sugestões. Execute uma coleta de dados primeiro."
-              actionLabel="Tentar novamente"
+              message="Clique em 'Gerar novas sugestões' para a IA analisar os dados e criar recomendações para a campanha."
+              actionLabel="Gerar sugestões"
               onAction={handleRefresh}
             />
           )}
@@ -165,7 +166,7 @@ export function InsightsContent() {
       </div>
 
       {/* Disclaimer */}
-      <p className="mt-8 text-xs text-muted-foreground">
+      <p className="mt-8 text-xs text-muted-foreground/60">
         Sugestões geradas por IA com base nos dados disponíveis. Valide com a
         equipe de campanha antes de agir.
       </p>

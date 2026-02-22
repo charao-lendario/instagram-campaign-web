@@ -122,9 +122,9 @@ export function PostsContent() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold tracking-tight">Posts</h1>
-      <p className="mt-2 text-muted-foreground">
-        Ranking de posts por engajamento e sentimento.
+      <h1 className="text-2xl font-bold tracking-tight text-white">Desempenho de Posts</h1>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Qual conteúdo funciona melhor — ranking por engajamento e sentimento.
       </p>
 
       <div className="mt-6">
@@ -140,10 +140,10 @@ export function PostsContent() {
 
         {allPosts.length > 0 && (
           <>
-            <div className="rounded-lg border">
+            <div className="rounded-lg border border-border">
               <Table>
                 <TableHeader>
-                  <TableRow>
+                  <TableRow className="border-border hover:bg-secondary/30">
                     <TableHead>Candidato</TableHead>
                     <TableHead>Data</TableHead>
                     <TableHead>Legenda</TableHead>
@@ -169,7 +169,7 @@ export function PostsContent() {
                 </TableHeader>
                 <TableBody>
                   {allPosts.map((post) => (
-                    <TableRow key={post.post_id}>
+                    <TableRow key={post.post_id} className="border-border hover:bg-secondary/20">
                       <TableCell className="font-medium">
                         {post.candidate_username}
                       </TableCell>
@@ -205,6 +205,7 @@ export function PostsContent() {
                   variant="outline"
                   onClick={handleLoadMore}
                   disabled={loadingMore}
+                  className="border-border/50 bg-secondary/50 text-foreground hover:bg-secondary"
                 >
                   {loadingMore ? "Carregando..." : "Carregar mais"}
                 </Button>

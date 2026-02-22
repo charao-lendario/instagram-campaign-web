@@ -40,7 +40,7 @@ export function SentimentBar({ distribution, totalComments }: SentimentBarProps)
       label: "Neutro",
       count: distribution.neutral,
       percentage: (distribution.neutral / totalComments) * 100,
-      colorClass: "bg-slate-400",
+      colorClass: "bg-slate-500",
     },
   ]
 
@@ -50,7 +50,7 @@ export function SentimentBar({ distribution, totalComments }: SentimentBarProps)
         <div key={segment.label} className="space-y-1">
           <div className="flex items-center justify-between text-xs">
             <span className="text-muted-foreground">{segment.label}</span>
-            <span className="font-medium">
+            <span className="font-medium text-foreground/80">
               {segment.count} ({segment.percentage.toFixed(1)}%)
             </span>
           </div>

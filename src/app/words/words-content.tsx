@@ -29,7 +29,7 @@ function getFilterLabel(filter: CandidateFilter): string {
     case "sheila":
       return "Delegada Sheila"
     default:
-      return "Todos os candidatos"
+      return "Ambos os candidatos"
   }
 }
 
@@ -49,16 +49,15 @@ export function WordsContent() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold tracking-tight">Nuvem de Palavras</h1>
-      <p className="mt-2 text-muted-foreground">
-        Palavras mais frequentes nos comentários.
+      <h1 className="text-2xl font-bold tracking-tight text-white">O Que Falam</h1>
+      <p className="mt-1 text-sm text-muted-foreground">
+        As palavras e expressões mais usadas pelo público nos comentários.
       </p>
 
       {/* Subtitle with filter and count */}
       {data && (
-        <p className="mt-1 text-sm text-muted-foreground">
-          {getFilterLabel(candidateFilter)} — {data.total_unique_words} palavras
-          únicas
+        <p className="mt-1 text-xs text-muted-foreground/60">
+          {getFilterLabel(candidateFilter)} — {data.total_unique_words} palavras únicas encontradas
         </p>
       )}
 
@@ -72,11 +71,32 @@ export function WordsContent() {
         )}
 
         {!loading && !error && data && data.words.length > 0 && (
-          <Card>
-            <CardContent className="pt-6">
-              <WordCloudChart words={data.words} />
-            </CardContent>
-          </Card>
+          <>
+            <Card>
+              <CardContent className="pt-6">
+                <WordCloudChart words={data.words} />
+              </CardContent>
+            </Card>
+
+            {/* Top 20 word list */}
+            <Card className="mt-4">
+              <CardContent className="pt-6">
+                <h3 className="mb-3 text-sm font-medium text-white">Top 20 palavras mais frequentes</h3>
+                <div className="grid grid-cols-2 gap-x-8 gap-y-1 sm:grid-cols-4">
+                  {data.words.slice(0, 20).map((word, i) => (
+                    <div key={word.word} className="flex items-center justify-between py-1">
+                      <span className="text-sm text-foreground/80">
+                        {i + 1}. {word.word}
+                      </span>
+                      <span className="text-xs text-muted-foreground">
+                        {word.count}x
+                      </span>
+                    </div>
+                  ))}
+                </div>
+              </CardContent>
+            </Card>
+          </>
         )}
       </div>
     </div>

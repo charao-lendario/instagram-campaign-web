@@ -11,17 +11,17 @@ const TREND_CONFIG = {
   improving: {
     Icon: ArrowUp,
     label: "Melhorando",
-    className: "text-green-600",
+    className: "text-green-400",
   },
   declining: {
     Icon: ArrowDown,
     label: "Declinando",
-    className: "text-red-600",
+    className: "text-red-400",
   },
   stable: {
     Icon: Minus,
     label: "Estável",
-    className: "text-slate-500",
+    className: "text-slate-400",
   },
 } as const
 

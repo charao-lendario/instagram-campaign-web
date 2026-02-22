@@ -15,9 +15,9 @@ function getSentimentVariant(score: number): SentimentVariant {
 }
 
 const VARIANT_STYLES: Record<SentimentVariant, string> = {
-  positive: "bg-green-100 text-green-800 border-green-200",
-  negative: "bg-red-100 text-red-800 border-red-200",
-  neutral: "bg-slate-100 text-slate-700 border-slate-200",
+  positive: "bg-green-900/40 text-green-300 border-green-700/50",
+  negative: "bg-red-900/40 text-red-300 border-red-700/50",
+  neutral: "bg-slate-800/40 text-slate-300 border-slate-600/50",
 }
 
 const VARIANT_LABELS: Record<SentimentVariant, string> = {

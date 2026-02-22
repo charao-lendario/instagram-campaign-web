@@ -7,9 +7,9 @@ export default function OverviewPage() {
     <Suspense
       fallback={
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Visão Geral</h1>
-          <p className="mt-2 text-muted-foreground">
-            Visão geral das métricas de campanha.
+          <h1 className="text-2xl font-bold tracking-tight text-white">Painel de Campanha</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Análise dos últimos posts de cada candidato no Instagram.
           </p>
           <div className="mt-6 space-y-6">
             <LoadingSkeleton variant="card" />

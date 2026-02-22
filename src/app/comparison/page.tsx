@@ -7,9 +7,9 @@ export default function ComparisonPage() {
     <Suspense
       fallback={
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Comparativo</h1>
-          <p className="mt-2 text-muted-foreground">
-            Comparação lado a lado entre candidatos.
+          <h1 className="text-2xl font-bold tracking-tight text-white">Perfil Individual</h1>
+          <p className="mt-1 text-sm text-muted-foreground">
+            Análise detalhada de cada candidato.
           </p>
           <div className="mt-6 grid grid-cols-1 gap-6 lg:grid-cols-2">
             <LoadingSkeleton variant="card" />

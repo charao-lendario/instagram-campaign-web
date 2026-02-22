@@ -30,7 +30,7 @@ export function CandidateFilter() {
   )
 
   return (
-    <div className="flex items-center gap-1 rounded-lg border bg-muted p-1">
+    <div className="flex items-center gap-1 rounded-lg border border-border/50 bg-[#0a1220] p-1">
       {CANDIDATE_OPTIONS.map((option) => (
         <button
           key={option.value}
@@ -38,7 +38,7 @@ export function CandidateFilter() {
           className={cn(
             "rounded-md px-3 py-1.5 text-sm font-medium transition-colors",
             currentValue === option.value
-              ? "bg-background text-foreground shadow-sm"
+              ? "bg-secondary text-white shadow-sm"
               : "text-muted-foreground hover:text-foreground"
           )}
         >

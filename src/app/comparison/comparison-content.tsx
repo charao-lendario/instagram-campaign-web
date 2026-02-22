@@ -6,6 +6,8 @@ import {
   CANDIDATE_A_USERNAME,
   CANDIDATE_A_COLOR,
   CANDIDATE_B_COLOR,
+  CANDIDATE_A_CARGO,
+  CANDIDATE_B_CARGO,
 } from "@/lib/constants"
 import { formatThemeLabel } from "@/lib/utils"
 import {
@@ -24,18 +26,22 @@ import { SentimentBar } from "@/components/dashboard/sentiment-bar"
 import { TrendIndicator } from "@/components/dashboard/trend-indicator"
 import { Sparkline } from "@/components/charts/sparkline"
 
-function CandidateComparisonCard({
+function CandidateProfileCard({
   candidate,
   color,
 }: {
   candidate: CandidateComparison
   color: string
 }) {
+  const cargo = candidate.username === CANDIDATE_A_USERNAME
+    ? CANDIDATE_A_CARGO
+    : CANDIDATE_B_CARGO
+
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{candidate.display_name}</CardTitle>
-        <CardDescription>@{candidate.username}</CardDescription>
+        <CardTitle className="text-white">{candidate.display_name}</CardTitle>
+        <CardDescription>{cargo} — @{candidate.username}</CardDescription>
       </CardHeader>
       <CardContent className="space-y-5">
         {/* Average sentiment */}
@@ -47,15 +53,15 @@ function CandidateComparisonCard({
         {/* Key metrics */}
         <div className="grid grid-cols-3 gap-4 text-center">
           <div>
-            <p className="text-2xl font-bold">{candidate.total_posts}</p>
+            <p className="text-2xl font-bold text-white">{candidate.total_posts}</p>
             <p className="text-xs text-muted-foreground">Posts</p>
           </div>
           <div>
-            <p className="text-2xl font-bold">{candidate.total_comments}</p>
+            <p className="text-2xl font-bold text-white">{candidate.total_comments}</p>
             <p className="text-xs text-muted-foreground">Comentários</p>
           </div>
           <div>
-            <p className="text-2xl font-bold">
+            <p className="text-2xl font-bold text-white">
               {candidate.total_engagement.toLocaleString("pt-BR")}
             </p>
             <p className="text-xs text-muted-foreground">Engajamento</p>
@@ -64,7 +70,7 @@ function CandidateComparisonCard({
 
         {/* Sentiment distribution */}
         <div>
-          <p className="mb-2 text-sm font-medium">Distribuição de sentimento</p>
+          <p className="mb-2 text-sm font-medium text-foreground/80">Distribuição de sentimento</p>
           <SentimentBar
             distribution={candidate.sentiment_distribution}
             totalComments={candidate.total_comments}
@@ -73,10 +79,10 @@ function CandidateComparisonCard({
 
         {/* Top 3 themes */}
         <div>
-          <p className="mb-2 text-sm font-medium">Top temas</p>
+          <p className="mb-2 text-sm font-medium text-foreground/80">Temas mais citados</p>
           <div className="flex flex-wrap gap-2">
             {candidate.top_themes.map((t) => (
-              <Badge key={t.theme} variant="secondary">
+              <Badge key={t.theme} variant="secondary" className="bg-secondary text-foreground/80">
                 {formatThemeLabel(t.theme)} ({t.count})
               </Badge>
             ))}
@@ -85,7 +91,7 @@ function CandidateComparisonCard({
 
         {/* Trend */}
         <div>
-          <p className="mb-2 text-sm font-medium">Tendência</p>
+          <p className="mb-2 text-sm font-medium text-foreground/80">Tendência do candidato</p>
           <TrendIndicator
             direction={candidate.trend.direction}
             delta={candidate.trend.delta}
@@ -110,9 +116,9 @@ export function ComparisonContent() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold tracking-tight">Comparativo</h1>
-      <p className="mt-2 text-muted-foreground">
-        Comparação lado a lado entre candidatos.
+      <h1 className="text-2xl font-bold tracking-tight text-white">Perfil Individual</h1>
+      <p className="mt-1 text-sm text-muted-foreground">
+        Análise detalhada de cada candidato — desempenho, sentimento e tendência.
       </p>
 
       <div className="mt-6">
@@ -126,13 +132,13 @@ export function ComparisonContent() {
         {error && <ErrorMessage error={error} onRetry={refetch} />}
 
         {!loading && !error && data && data.candidates.length === 0 && (
-          <EmptyState message="Nenhum dado de comparação disponível." />
+          <EmptyState message="Nenhum dado disponível." />
         )}
 
         {!loading && !error && data && data.candidates.length > 0 && (
           <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
             {data.candidates.map((candidate) => (
-              <CandidateComparisonCard
+              <CandidateProfileCard
                 key={candidate.candidate_id}
                 candidate={candidate}
                 color={
