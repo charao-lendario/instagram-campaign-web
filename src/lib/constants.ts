@@ -25,7 +25,6 @@ export const CANDIDATE_OPTIONS: Array<{ value: CandidateFilter; label: string }>
 export const NAV_TABS = [
   { label: 'Painel', href: '/overview' },
   { label: 'Termômetro', href: '/sentiment' },
-  { label: 'O Que Falam', href: '/words' },
   { label: 'Temas Quentes', href: '/themes' },
   { label: 'Posts', href: '/posts' },
   { label: 'Perfil', href: '/comparison' },

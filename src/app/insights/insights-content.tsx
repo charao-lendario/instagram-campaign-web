@@ -2,7 +2,7 @@
 
 import { useState } from "react"
 import { useSearchParams } from "next/navigation"
-import { Loader2 } from "lucide-react"
+import { Loader2, Brain, Sparkles } from "lucide-react"
 import { useSuggestions } from "@/hooks/use-suggestions"
 import { useOverview } from "@/hooks/use-overview"
 import { fetchSuggestions } from "@/lib/api"
@@ -10,6 +10,7 @@ import type { CandidateFilter } from "@/lib/constants"
 import type { Suggestion, SuggestionsResponse } from "@/lib/types"
 import { getCandidateId, formatDate } from "@/lib/utils"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 import { LoadingSkeleton } from "@/components/shared/loading-skeleton"
 import { ErrorMessage } from "@/components/shared/error-message"
 import { EmptyState } from "@/components/shared/empty-state"
@@ -31,7 +32,6 @@ export function InsightsContent() {
   const searchParams = useSearchParams()
   const candidateFilter = (searchParams.get("candidate") ?? "charlles") as CandidateFilter
 
-  // Get overview data to resolve candidate UUID
   const { data: overviewData } = useOverview()
 
   const candidateId =
@@ -64,7 +64,6 @@ export function InsightsContent() {
     }
   }
 
-  // Use refreshed data if available, otherwise fall back to initial hook data
   const displayData = refreshData ?? data
   const displayError = refreshError ?? error
   const isLoading = loading && !refreshData
@@ -75,49 +74,61 @@ export function InsightsContent() {
 
   return (
     <div>
-      <div className="flex items-center justify-between">
+      {/* Header */}
+      <div className="flex items-start justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight text-white">
-            Estratégia de Campanha
-          </h1>
-          <p className="mt-1 text-sm text-muted-foreground">
-            Recomendações geradas por IA baseadas na análise dos comentários reais.
-          </p>
+          <div className="flex items-center gap-3">
+            <div className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-violet-500 to-purple-600">
+              <Brain className="h-5 w-5 text-white" />
+            </div>
+            <div>
+              <h1 className="text-2xl font-bold tracking-tight text-white">
+                Estratégia de Campanha
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                Consultoria IA inspirada em Marcelo Vitorino — o maior marketeiro político do Brasil
+              </p>
+            </div>
+          </div>
         </div>
         <Button
-          variant="outline"
-          size="sm"
           onClick={handleRefresh}
           disabled={refreshing || isLoading}
-          className="border-border/50 bg-secondary/50 text-foreground hover:bg-secondary"
+          className="bg-gradient-to-r from-violet-600 to-purple-600 text-white hover:from-violet-700 hover:to-purple-700 border-0 shadow-lg shadow-violet-900/30"
         >
           {refreshing ? (
             <>
               <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-              Gerando...
+              A IA está analisando...
             </>
           ) : (
-            "Gerar novas sugestões"
+            <>
+              <Sparkles className="mr-2 h-4 w-4" />
+              Gerar Estratégia
+            </>
           )}
         </Button>
       </div>
 
-      {/* Last generated timestamp */}
+      {/* Metadata */}
       {displayData && (
-        <p className="mt-2 text-xs text-muted-foreground/60">
+        <p className="mt-3 text-xs text-muted-foreground/60">
           Gerado em: {formatDate(displayData.generated_at)} |{" "}
           {displayData.data_snapshot.total_comments_analyzed} comentários
           analisados
         </p>
       )}
 
-      <div className="mt-6">
+      <div className="mt-6 space-y-6">
         {/* Loading state */}
         {(isLoading || refreshing) && sortedSuggestions.length === 0 && (
           <div className="space-y-4">
-            {Array.from({ length: 3 }).map((_, i) => (
-              <LoadingSkeleton key={i} variant="card" />
-            ))}
+            <LoadingSkeleton variant="card" />
+            <div className="space-y-4">
+              {Array.from({ length: 3 }).map((_, i) => (
+                <LoadingSkeleton key={i} variant="card" />
+              ))}
+            </div>
           </div>
         )}
 
@@ -140,35 +151,77 @@ export function InsightsContent() {
           displayData &&
           sortedSuggestions.length === 0 && (
             <EmptyState
-              message="Clique em 'Gerar novas sugestões' para a IA analisar os dados e criar recomendações para a campanha."
-              actionLabel="Gerar sugestões"
+              message="Clique em 'Gerar Estratégia' para a IA analisar os comentários reais e criar um plano estratégico completo para a campanha."
+              actionLabel="Gerar Estratégia"
               onAction={handleRefresh}
             />
           )}
+
+        {/* Executive summary */}
+        {displayData?.resumo_executivo && !refreshing && (
+          <Card className="border-violet-800/30 bg-gradient-to-br from-violet-950/40 to-purple-950/30">
+            <CardContent className="p-5">
+              <div className="mb-3 flex items-center gap-2">
+                <Brain className="h-5 w-5 text-violet-400" />
+                <h2 className="text-sm font-semibold text-violet-300">
+                  Resumo Executivo
+                </h2>
+              </div>
+              <p className="text-sm leading-relaxed text-foreground/80">
+                {displayData.resumo_executivo}
+              </p>
+            </CardContent>
+          </Card>
+        )}
 
         {/* Suggestion cards */}
         {sortedSuggestions.length > 0 && !refreshing && (
           <div className="space-y-4">
             {sortedSuggestions.map((suggestion, index) => (
-              <SuggestionCard key={index} suggestion={suggestion} />
+              <SuggestionCard
+                key={index}
+                suggestion={suggestion}
+                index={index}
+              />
             ))}
           </div>
         )}
 
         {/* Refreshing overlay when already have cards */}
         {refreshing && sortedSuggestions.length > 0 && (
-          <div className="space-y-4 opacity-50">
-            {sortedSuggestions.map((suggestion, index) => (
-              <SuggestionCard key={index} suggestion={suggestion} />
-            ))}
+          <div className="space-y-4 opacity-40">
+            {displayData?.resumo_executivo && (
+              <Card className="border-violet-800/30 bg-gradient-to-br from-violet-950/40 to-purple-950/30">
+                <CardContent className="p-5">
+                  <div className="mb-3 flex items-center gap-2">
+                    <Brain className="h-5 w-5 text-violet-400" />
+                    <h2 className="text-sm font-semibold text-violet-300">
+                      Resumo Executivo
+                    </h2>
+                  </div>
+                  <p className="text-sm leading-relaxed text-foreground/80">
+                    {displayData.resumo_executivo}
+                  </p>
+                </CardContent>
+              </Card>
+            )}
+            <div className="space-y-4">
+              {sortedSuggestions.map((suggestion, index) => (
+                <SuggestionCard
+                  key={index}
+                  suggestion={suggestion}
+                  index={index}
+                />
+              ))}
+            </div>
           </div>
         )}
       </div>
 
       {/* Disclaimer */}
-      <p className="mt-8 text-xs text-muted-foreground/60">
-        Sugestões geradas por IA com base nos dados disponíveis. Valide com a
-        equipe de campanha antes de agir.
+      <p className="mt-8 text-xs text-muted-foreground/50">
+        Estratégias geradas por IA com base nos comentários reais do Instagram.
+        Valide com a equipe de campanha antes de executar.
       </p>
     </div>
   )

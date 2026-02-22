@@ -1,9 +1,12 @@
 "use client"
 
+import { useSearchParams } from "next/navigation"
 import { useComparison } from "@/hooks/use-comparison"
 import type { CandidateComparison } from "@/lib/types"
+import type { CandidateFilter } from "@/lib/constants"
 import {
   CANDIDATE_A_USERNAME,
+  CANDIDATE_B_USERNAME,
   CANDIDATE_A_COLOR,
   CANDIDATE_B_COLOR,
   CANDIDATE_A_CARGO,
@@ -77,7 +80,7 @@ function CandidateProfileCard({
           />
         </div>
 
-        {/* Top 3 themes */}
+        {/* Top themes */}
         <div>
           <p className="mb-2 text-sm font-medium text-foreground/80">Temas mais citados</p>
           <div className="flex flex-wrap gap-2">
@@ -91,7 +94,7 @@ function CandidateProfileCard({
 
         {/* Trend */}
         <div>
-          <p className="mb-2 text-sm font-medium text-foreground/80">Tendência do candidato</p>
+          <p className="mb-2 text-sm font-medium text-foreground/80">Tendência de sentimento</p>
           <TrendIndicator
             direction={candidate.trend.direction}
             delta={candidate.trend.delta}
@@ -112,42 +115,49 @@ function CandidateProfileCard({
 }
 
 export function ComparisonContent() {
+  const searchParams = useSearchParams()
+  const candidateFilter = (searchParams.get("candidate") ?? "charlles") as CandidateFilter
+
   const { data, loading, error, refetch } = useComparison()
+
+  const targetUsername = candidateFilter === "charlles"
+    ? CANDIDATE_A_USERNAME
+    : CANDIDATE_B_USERNAME
+
+  const selectedCandidate = data?.candidates.find(
+    (c) => c.username === targetUsername
+  )
+
+  const color = candidateFilter === "charlles"
+    ? CANDIDATE_A_COLOR
+    : CANDIDATE_B_COLOR
 
   return (
     <div>
-      <h1 className="text-2xl font-bold tracking-tight text-white">Perfil Individual</h1>
+      <h1 className="text-2xl font-bold tracking-tight text-white">Perfil do Candidato</h1>
       <p className="mt-1 text-sm text-muted-foreground">
-        Análise detalhada de cada candidato — desempenho, sentimento e tendência.
+        Análise detalhada — desempenho, sentimento e tendência.
       </p>
 
       <div className="mt-6">
         {loading && (
-          <div className="grid grid-cols-1 gap-6 lg:grid-cols-2">
-            <LoadingSkeleton variant="card" />
+          <div className="max-w-lg">
             <LoadingSkeleton variant="card" />
           </div>
         )}
 
         {error && <ErrorMessage error={error} onRetry={refetch} />}
 
-        {!loading && !error && data && data.candidates.length === 0 && (
-          <EmptyState message="Nenhum dado disponível." />
+        {!loading && !error && !selectedCandidate && (
+          <EmptyState message="Nenhum dado disponível para este candidato." />
         )}
 
-        {!loading && !error && data && data.candidates.length > 0 && (
-          <div className="grid grid-cols-1 gap-8 lg:grid-cols-2">
-            {data.candidates.map((candidate) => (
-              <CandidateProfileCard
-                key={candidate.candidate_id}
-                candidate={candidate}
-                color={
-                  candidate.username === CANDIDATE_A_USERNAME
-                    ? CANDIDATE_A_COLOR
-                    : CANDIDATE_B_COLOR
-                }
-              />
-            ))}
+        {!loading && !error && selectedCandidate && (
+          <div className="max-w-lg">
+            <CandidateProfileCard
+              candidate={selectedCandidate}
+              color={color}
+            />
           </div>
         )}
       </div>

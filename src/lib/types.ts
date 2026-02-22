@@ -121,10 +121,18 @@ export interface Suggestion {
   description: string
   supporting_data: string
   priority: 'high' | 'medium' | 'low'
+  categoria?: string
+  acoes_concretas?: string[]
+  exemplo_post?: string
+  roteiro_video?: string
+  publico_alvo?: string
+  para_quem?: string
+  impacto_esperado?: string
 }
 
 export interface SuggestionsResponse {
   suggestions: Suggestion[]
+  resumo_executivo?: string
   generated_at: string
   data_snapshot: {
     total_comments_analyzed: number
