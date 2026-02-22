@@ -7,6 +7,7 @@ import type {
   PostsResponse,
   ComparisonData,
   CompetitiveAnalysisData,
+  ContextualSentimentData,
   SuggestionsResponse,
   ScrapingRunStatus,
   HealthStatus,
@@ -96,6 +97,14 @@ export async function fetchCompetitiveAnalysis(params?: {
 }): Promise<CompetitiveAnalysisData> {
   const query = buildQuery(params ?? {})
   return apiFetch<CompetitiveAnalysisData>(`/api/v1/analytics/competitive${query}`)
+}
+
+// --- Contextual Sentiment ---
+
+export async function fetchContextualSentiment(postId: string): Promise<ContextualSentimentData> {
+  return apiFetch<ContextualSentimentData>(`/api/v1/analysis/sentiment/contextual/${postId}`, {
+    method: "POST",
+  })
 }
 
 // --- Scraping endpoint ---

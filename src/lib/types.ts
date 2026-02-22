@@ -162,6 +162,22 @@ export interface CompetitiveAnalysisData {
   sentiment_advantage: number
 }
 
+// --- Contextual Sentiment ---
+
+export interface ContextualSentimentData {
+  post_id: string
+  caption_preview: string
+  candidate_name: string
+  total_comments: number
+  total_classified: number
+  apoio: number
+  contra: number
+  neutro: number
+  apoio_percent: number
+  contra_percent: number
+  neutro_percent: number
+}
+
 // --- Scraping ---
 
 export interface ScrapingRunStatus {

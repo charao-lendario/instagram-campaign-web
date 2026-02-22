@@ -2,11 +2,21 @@
 
 import { useState } from "react"
 import { useSearchParams } from "next/navigation"
-import { ArrowUp, ArrowDown, ExternalLink } from "lucide-react"
+import {
+  ArrowUp,
+  ArrowDown,
+  ExternalLink,
+  Brain,
+  Loader2,
+  ThumbsUp,
+  ThumbsDown,
+  Minus,
+  X,
+} from "lucide-react"
 import { useOverview } from "@/hooks/use-overview"
-import { fetchPosts } from "@/lib/api"
+import { fetchPosts, fetchContextualSentiment } from "@/lib/api"
 import type { CandidateFilter } from "@/lib/constants"
-import type { PostData } from "@/lib/types"
+import type { PostData, ContextualSentimentData } from "@/lib/types"
 import { getCandidateId, formatDateMedium } from "@/lib/utils"
 import {
   Table,
@@ -17,6 +27,7 @@ import {
   TableCell,
 } from "@/components/ui/table"
 import { Button } from "@/components/ui/button"
+import { Card, CardContent } from "@/components/ui/card"
 import { LoadingSkeleton } from "@/components/shared/loading-skeleton"
 import { ErrorMessage } from "@/components/shared/error-message"
 import { EmptyState } from "@/components/shared/empty-state"
@@ -48,6 +59,99 @@ function truncateCaption(caption: string, maxLength: number = 40): string {
   return caption.slice(0, maxLength).trim() + "..."
 }
 
+function ContextualBreakdown({
+  data,
+  onClose,
+}: {
+  data: ContextualSentimentData
+  onClose: () => void
+}) {
+  return (
+    <Card className="border-violet-800/30 bg-gradient-to-br from-violet-950/40 to-purple-950/30">
+      <CardContent className="p-5">
+        <div className="mb-3 flex items-center justify-between">
+          <div className="flex items-center gap-2">
+            <Brain className="h-5 w-5 text-violet-400" />
+            <h3 className="text-sm font-semibold text-violet-300">
+              Análise Contextual — {data.candidate_name}
+            </h3>
+          </div>
+          <button
+            onClick={onClose}
+            className="rounded-md p-1 text-muted-foreground hover:bg-secondary/50 hover:text-foreground"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </div>
+
+        <p className="mb-4 text-xs italic text-muted-foreground">
+          &ldquo;{data.caption_preview}...&rdquo;
+        </p>
+
+        <div className="grid grid-cols-3 gap-3 text-center">
+          <div className="rounded-lg bg-emerald-950/40 p-3">
+            <div className="flex items-center justify-center gap-1.5">
+              <ThumbsUp className="h-4 w-4 text-emerald-400" />
+              <p className="text-2xl font-bold text-emerald-300">{data.apoio}</p>
+            </div>
+            <p className="mt-1 text-xs text-emerald-400/70">
+              Apoio ({data.apoio_percent}%)
+            </p>
+          </div>
+          <div className="rounded-lg bg-red-950/40 p-3">
+            <div className="flex items-center justify-center gap-1.5">
+              <ThumbsDown className="h-4 w-4 text-red-400" />
+              <p className="text-2xl font-bold text-red-300">{data.contra}</p>
+            </div>
+            <p className="mt-1 text-xs text-red-400/70">
+              Contra ({data.contra_percent}%)
+            </p>
+          </div>
+          <div className="rounded-lg bg-slate-800/40 p-3">
+            <div className="flex items-center justify-center gap-1.5">
+              <Minus className="h-4 w-4 text-slate-400" />
+              <p className="text-2xl font-bold text-slate-300">{data.neutro}</p>
+            </div>
+            <p className="mt-1 text-xs text-slate-400/70">
+              Neutro ({data.neutro_percent}%)
+            </p>
+          </div>
+        </div>
+
+        {/* Stacked bar */}
+        <div className="mt-4 flex h-3 overflow-hidden rounded-full">
+          {data.apoio_percent > 0 && (
+            <div
+              className="bg-emerald-500"
+              style={{ width: `${data.apoio_percent}%` }}
+            />
+          )}
+          {data.neutro_percent > 0 && (
+            <div
+              className="bg-slate-500"
+              style={{ width: `${data.neutro_percent}%` }}
+            />
+          )}
+          {data.contra_percent > 0 && (
+            <div
+              className="bg-red-500"
+              style={{ width: `${data.contra_percent}%` }}
+            />
+          )}
+        </div>
+
+        <p className="mt-3 text-xs text-muted-foreground">
+          {data.apoio_percent > 50
+            ? "A maioria dos comentários demonstra apoio à candidata, mesmo os que expressam revolta com o tema abordado."
+            : data.contra_percent > 50
+              ? "A maioria dos comentários é crítica diretamente à candidata. Atenção redobrada neste conteúdo."
+              : "Os comentários estão divididos. Pode ser necessário ajustar a abordagem do conteúdo."}
+        </p>
+      </CardContent>
+    </Card>
+  )
+}
+
 export function PostsContent() {
   const searchParams = useSearchParams()
   const candidateFilter = (searchParams.get("candidate") ?? "charlles") as CandidateFilter
@@ -57,6 +161,11 @@ export function PostsContent() {
   const [extraPosts, setExtraPosts] = useState<PostData[]>([])
   const [loadingMore, setLoadingMore] = useState(false)
   const [currentOffset, setCurrentOffset] = useState(0)
+
+  // Contextual sentiment state
+  const [analyzingPostId, setAnalyzingPostId] = useState<string | null>(null)
+  const [contextualData, setContextualData] = useState<Record<string, ContextualSentimentData>>({})
+  const [contextualError, setContextualError] = useState<string | null>(null)
 
   const { data: overviewData } = useOverview()
 
@@ -114,6 +223,29 @@ export function PostsContent() {
     }
   }
 
+  const handleAnalyzeContext = async (postId: string) => {
+    setAnalyzingPostId(postId)
+    setContextualError(null)
+    try {
+      const result = await fetchContextualSentiment(postId)
+      setContextualData((prev) => ({ ...prev, [postId]: result }))
+    } catch (err) {
+      setContextualError(
+        err instanceof Error ? err.message : "Falha na análise contextual"
+      )
+    } finally {
+      setAnalyzingPostId(null)
+    }
+  }
+
+  const handleCloseContextual = (postId: string) => {
+    setContextualData((prev) => {
+      const next = { ...prev }
+      delete next[postId]
+      return next
+    })
+  }
+
   const showLoadMore = allPosts.length < totalPosts && allPosts.length > 0
 
   return (
@@ -160,6 +292,7 @@ export function PostsContent() {
                         </span>
                       </TableHead>
                     ))}
+                    <TableHead className="w-[100px]">Contexto</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -199,11 +332,52 @@ export function PostsContent() {
                       <TableCell>
                         <SentimentBadge score={post.average_sentiment_score} />
                       </TableCell>
+                      <TableCell>
+                        {contextualData[post.post_id] ? (
+                          <span className="text-xs text-emerald-400">
+                            {contextualData[post.post_id].apoio_percent}% apoio
+                          </span>
+                        ) : (
+                          <Button
+                            variant="ghost"
+                            size="sm"
+                            className="h-7 gap-1 px-2 text-xs text-violet-400 hover:text-violet-300 hover:bg-violet-900/30"
+                            onClick={() => handleAnalyzeContext(post.post_id)}
+                            disabled={analyzingPostId === post.post_id}
+                          >
+                            {analyzingPostId === post.post_id ? (
+                              <Loader2 className="h-3 w-3 animate-spin" />
+                            ) : (
+                              <Brain className="h-3 w-3" />
+                            )}
+                            Analisar
+                          </Button>
+                        )}
+                      </TableCell>
                     </TableRow>
                   ))}
                 </TableBody>
               </Table>
             </div>
+
+            {/* Contextual sentiment results */}
+            {Object.entries(contextualData).length > 0 && (
+              <div className="mt-6 space-y-4">
+                {Object.entries(contextualData).map(([postId, cData]) => (
+                  <ContextualBreakdown
+                    key={postId}
+                    data={cData}
+                    onClose={() => handleCloseContextual(postId)}
+                  />
+                ))}
+              </div>
+            )}
+
+            {contextualError && (
+              <div className="mt-4 rounded-lg border border-red-800/30 bg-red-950/20 p-3 text-sm text-red-300">
+                {contextualError}
+              </div>
+            )}
 
             {showLoadMore && (
               <div className="mt-4 flex justify-center">
