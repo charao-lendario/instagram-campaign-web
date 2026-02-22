@@ -44,15 +44,15 @@ export function SentimentContent() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold tracking-tight">Sentiment Timeline</h1>
+      <h1 className="text-2xl font-bold tracking-tight">Linha do Tempo de Sentimento</h1>
       <p className="mt-2 text-muted-foreground">
-        Evolucao do sentimento ao longo do tempo por candidato.
+        Evolução do sentimento ao longo do tempo por candidato.
       </p>
 
       {/* Date range inputs */}
       <Card className="mt-6">
         <CardHeader>
-          <CardTitle className="text-base">Periodo</CardTitle>
+          <CardTitle className="text-base">Período</CardTitle>
         </CardHeader>
         <CardContent>
           <div className="flex flex-wrap items-center gap-4">
@@ -70,7 +70,7 @@ export function SentimentContent() {
             </div>
             <div className="flex items-center gap-2">
               <label htmlFor="end-date" className="text-sm text-muted-foreground">
-                Ate:
+                Até:
               </label>
               <input
                 id="end-date"
@@ -95,7 +95,7 @@ export function SentimentContent() {
         {error && <ErrorMessage error={error} onRetry={refetch} />}
 
         {!loading && !error && data && data.data_points.length === 0 && (
-          <EmptyState message="Nenhum dado para o periodo selecionado." />
+          <EmptyState message="Nenhum dado para o período selecionado." />
         )}
 
         {!loading && !error && data && data.data_points.length > 0 && (

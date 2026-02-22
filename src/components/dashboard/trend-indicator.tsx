@@ -20,7 +20,7 @@ const TREND_CONFIG = {
   },
   stable: {
     Icon: Minus,
-    label: "Estavel",
+    label: "Estável",
     className: "text-slate-500",
   },
 } as const

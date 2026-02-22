@@ -6,7 +6,7 @@ export function Header() {
     <header className="border-b bg-background">
       <div className="mx-auto flex max-w-7xl items-center justify-between px-4 py-4 sm:px-6 lg:px-8">
         <h1 className="text-lg font-semibold tracking-tight sm:text-xl">
-          Instagram Campaign Analytics
+          Análise de Campanha Instagram
         </h1>
         <Suspense fallback={null}>
           <CandidateFilter />

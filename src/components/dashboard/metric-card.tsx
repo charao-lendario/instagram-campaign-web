@@ -31,7 +31,7 @@ export function MetricCard({ candidate, isHighlighted }: MetricCardProps) {
         {/* Average sentiment */}
         <div className="flex items-center justify-between">
           <span className="text-sm text-muted-foreground">
-            Sentimento medio
+            Sentimento médio
           </span>
           <SentimentBadge score={candidate.average_sentiment_score} />
         </div>
@@ -44,7 +44,7 @@ export function MetricCard({ candidate, isHighlighted }: MetricCardProps) {
           </div>
           <div>
             <p className="text-2xl font-bold">{candidate.total_comments}</p>
-            <p className="text-xs text-muted-foreground">Comentarios</p>
+            <p className="text-xs text-muted-foreground">Comentários</p>
           </div>
           <div>
             <p className="text-2xl font-bold">
@@ -56,7 +56,7 @@ export function MetricCard({ candidate, isHighlighted }: MetricCardProps) {
 
         {/* Sentiment distribution bars */}
         <div>
-          <p className="mb-2 text-sm font-medium">Distribuicao de sentimento</p>
+          <p className="mb-2 text-sm font-medium">Distribuição de sentimento</p>
           <SentimentBar
             distribution={candidate.sentiment_distribution}
             totalComments={candidate.total_comments}

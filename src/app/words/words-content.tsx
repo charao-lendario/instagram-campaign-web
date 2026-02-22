@@ -49,16 +49,16 @@ export function WordsContent() {
 
   return (
     <div>
-      <h1 className="text-2xl font-bold tracking-tight">Word Cloud</h1>
+      <h1 className="text-2xl font-bold tracking-tight">Nuvem de Palavras</h1>
       <p className="mt-2 text-muted-foreground">
-        Palavras mais frequentes nos comentarios.
+        Palavras mais frequentes nos comentários.
       </p>
 
       {/* Subtitle with filter and count */}
       {data && (
         <p className="mt-1 text-sm text-muted-foreground">
           {getFilterLabel(candidateFilter)} — {data.total_unique_words} palavras
-          unicas
+          únicas
         </p>
       )}
 
@@ -68,7 +68,7 @@ export function WordsContent() {
         {error && <ErrorMessage error={error} onRetry={refetch} />}
 
         {!loading && !error && data && data.words.length === 0 && (
-          <EmptyState message="Nenhum comentario coletado ainda." />
+          <EmptyState message="Nenhum comentário coletado ainda." />
         )}
 
         {!loading && !error && data && data.words.length > 0 && (

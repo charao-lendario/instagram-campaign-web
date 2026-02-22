@@ -21,11 +21,11 @@ export const CANDIDATE_OPTIONS: Array<{ value: CandidateFilter; label: string }>
 ] as const
 
 export const NAV_TABS = [
-  { label: 'Overview', href: '/overview' },
-  { label: 'Sentiment', href: '/sentiment' },
-  { label: 'Words', href: '/words' },
-  { label: 'Themes', href: '/themes' },
+  { label: 'Visão Geral', href: '/overview' },
+  { label: 'Sentimento', href: '/sentiment' },
+  { label: 'Palavras', href: '/words' },
+  { label: 'Temas', href: '/themes' },
   { label: 'Posts', href: '/posts' },
-  { label: 'Comparison', href: '/comparison' },
+  { label: 'Comparativo', href: '/comparison' },
   { label: 'Insights', href: '/insights' },
 ] as const

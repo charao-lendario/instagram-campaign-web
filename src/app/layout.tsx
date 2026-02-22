@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 })
 
 export const metadata: Metadata = {
-  title: "Instagram Campaign Analytics",
-  description: "Dashboard de analytics para campanhas no Instagram",
+  title: "Análise de Campanha Instagram",
+  description: "Dashboard de análise para campanhas no Instagram",
 }
 
 export default function RootLayout({

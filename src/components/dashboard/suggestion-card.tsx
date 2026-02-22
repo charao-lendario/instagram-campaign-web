@@ -17,7 +17,7 @@ const PRIORITY_BORDER: Record<Suggestion["priority"], string> = {
 
 const PRIORITY_BADGE_LABEL: Record<Suggestion["priority"], string> = {
   high: "Alta",
-  medium: "Media",
+  medium: "Média",
   low: "Baixa",
 }
 

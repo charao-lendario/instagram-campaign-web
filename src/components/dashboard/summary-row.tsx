@@ -21,7 +21,7 @@ export function SummaryRow({
         <div className="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
           <div className="flex items-center gap-2">
             <span className="text-sm text-muted-foreground">
-              Total de comentarios analisados:
+              Total de comentários analisados:
             </span>
             <span className="text-lg font-bold">
               {totalComments.toLocaleString("pt-BR")}
@@ -37,7 +37,7 @@ export function SummaryRow({
 
           <div className="flex items-center gap-2">
             <span className="text-sm text-muted-foreground">
-              Ultima coleta:
+              Última coleta:
             </span>
             <span className="text-sm font-medium">
               {formatDate(lastScrape)}

@@ -40,7 +40,7 @@ function CandidateComparisonCard({
       <CardContent className="space-y-5">
         {/* Average sentiment */}
         <div className="flex items-center justify-between">
-          <span className="text-sm text-muted-foreground">Sentimento medio</span>
+          <span className="text-sm text-muted-foreground">Sentimento médio</span>
           <SentimentBadge score={candidate.average_sentiment_score} />
         </div>
 
@@ -52,7 +52,7 @@ function CandidateComparisonCard({
           </div>
           <div>
             <p className="text-2xl font-bold">{candidate.total_comments}</p>
-            <p className="text-xs text-muted-foreground">Comentarios</p>
+            <p className="text-xs text-muted-foreground">Comentários</p>
           </div>
           <div>
             <p className="text-2xl font-bold">
@@ -64,7 +64,7 @@ function CandidateComparisonCard({
 
         {/* Sentiment distribution */}
         <div>
-          <p className="mb-2 text-sm font-medium">Distribuicao de sentimento</p>
+          <p className="mb-2 text-sm font-medium">Distribuição de sentimento</p>
           <SentimentBar
             distribution={candidate.sentiment_distribution}
             totalComments={candidate.total_comments}
@@ -85,7 +85,7 @@ function CandidateComparisonCard({
 
         {/* Trend */}
         <div>
-          <p className="mb-2 text-sm font-medium">Tendencia</p>
+          <p className="mb-2 text-sm font-medium">Tendência</p>
           <TrendIndicator
             direction={candidate.trend.direction}
             delta={candidate.trend.delta}
@@ -112,7 +112,7 @@ export function ComparisonContent() {
     <div>
       <h1 className="text-2xl font-bold tracking-tight">Comparativo</h1>
       <p className="mt-2 text-muted-foreground">
-        Comparacao lado a lado entre candidatos.
+        Comparação lado a lado entre candidatos.
       </p>
 
       <div className="mt-6">
@@ -126,7 +126,7 @@ export function ComparisonContent() {
         {error && <ErrorMessage error={error} onRetry={refetch} />}
 
         {!loading && !error && data && data.candidates.length === 0 && (
-          <EmptyState message="Nenhum dado de comparacao disponivel." />
+          <EmptyState message="Nenhum dado de comparação disponível." />
         )}
 
         {!loading && !error && data && data.candidates.length > 0 && (

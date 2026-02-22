@@ -57,7 +57,7 @@ export function InsightsContent() {
       setRefreshError(
         err instanceof Error
           ? err
-          : new Error("Nao foi possivel gerar sugestoes. Tente novamente.")
+          : new Error("Não foi possível gerar sugestões. Tente novamente.")
       )
     } finally {
       setRefreshing(false)
@@ -78,10 +78,10 @@ export function InsightsContent() {
       <div className="flex items-center justify-between">
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
-            Insights Estrategicos
+            Insights Estratégicos
           </h1>
           <p className="mt-2 text-muted-foreground">
-            Sugestoes estrategicas baseadas em dados.
+            Sugestões estratégicas baseadas em dados.
           </p>
         </div>
         <Button
@@ -96,7 +96,7 @@ export function InsightsContent() {
               Gerando...
             </>
           ) : (
-            "Atualizar sugestoes"
+            "Atualizar sugestões"
           )}
         </Button>
       </div>
@@ -105,7 +105,7 @@ export function InsightsContent() {
       {displayData && (
         <p className="mt-2 text-xs text-muted-foreground">
           Gerado em: {formatDate(displayData.generated_at)} |{" "}
-          {displayData.data_snapshot.total_comments_analyzed} comentarios
+          {displayData.data_snapshot.total_comments_analyzed} comentários
           analisados
         </p>
       )}
@@ -125,7 +125,7 @@ export function InsightsContent() {
           <ErrorMessage
             error={
               new Error(
-                "Nao foi possivel gerar sugestoes. Tente novamente."
+                "Não foi possível gerar sugestões. Tente novamente."
               )
             }
             onRetry={refreshData ? handleRefresh : refetch}
@@ -139,7 +139,7 @@ export function InsightsContent() {
           displayData &&
           sortedSuggestions.length === 0 && (
             <EmptyState
-              message="Dados insuficientes para gerar sugestoes. Execute uma coleta de dados primeiro."
+              message="Dados insuficientes para gerar sugestões. Execute uma coleta de dados primeiro."
               actionLabel="Tentar novamente"
               onAction={handleRefresh}
             />
@@ -166,7 +166,7 @@ export function InsightsContent() {
 
       {/* Disclaimer */}
       <p className="mt-8 text-xs text-muted-foreground">
-        Sugestoes geradas por IA com base nos dados disponiveis. Valide com a
+        Sugestões geradas por IA com base nos dados disponíveis. Valide com a
         equipe de campanha antes de agir.
       </p>
     </div>

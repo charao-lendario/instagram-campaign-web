@@ -7,9 +7,9 @@ export default function OverviewPage() {
     <Suspense
       fallback={
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Overview</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Visão Geral</h1>
           <p className="mt-2 text-muted-foreground">
-            Visao geral das metricas de campanha.
+            Visão geral das métricas de campanha.
           </p>
           <div className="mt-6 space-y-6">
             <LoadingSkeleton variant="card" />

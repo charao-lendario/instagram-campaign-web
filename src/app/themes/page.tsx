@@ -9,7 +9,7 @@ export default function ThemesPage() {
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Temas</h1>
           <p className="mt-2 text-muted-foreground">
-            Distribuicao de temas por candidato.
+            Distribuição de temas por candidato.
           </p>
           <div className="mt-6">
             <LoadingSkeleton variant="chart" />

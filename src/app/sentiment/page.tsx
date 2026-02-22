@@ -7,9 +7,9 @@ export default function SentimentPage() {
     <Suspense
       fallback={
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Sentiment Timeline</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Linha do Tempo de Sentimento</h1>
           <p className="mt-2 text-muted-foreground">
-            Evolucao do sentimento ao longo do tempo por candidato.
+            Evolução do sentimento ao longo do tempo por candidato.
           </p>
           <div className="mt-6">
             <LoadingSkeleton variant="chart" />

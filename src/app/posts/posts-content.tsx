@@ -35,7 +35,7 @@ const SORTABLE_COLUMNS: Array<{
   label: string
 }> = [
   { key: "like_count", label: "Curtidas" },
-  { key: "comment_count", label: "Comentarios" },
+  { key: "comment_count", label: "Comentários" },
   { key: "positive_ratio", label: "% Positivo" },
   { key: "negative_ratio", label: "% Negativo" },
   { key: "sentiment_score", label: "Sentimento" },

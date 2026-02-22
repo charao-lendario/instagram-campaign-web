@@ -36,7 +36,7 @@ export function ThemesContent() {
         <div>
           <h1 className="text-2xl font-bold tracking-tight">Temas</h1>
           <p className="mt-2 text-muted-foreground">
-            Distribuicao de temas por candidato.
+            Distribuição de temas por candidato.
           </p>
         </div>
         <Button
@@ -54,7 +54,7 @@ export function ThemesContent() {
         {error && <ErrorMessage error={error} onRetry={refetch} />}
 
         {!loading && !error && data && data.themes.length === 0 && (
-          <EmptyState message="Nenhum tema identificado nos comentarios." />
+          <EmptyState message="Nenhum tema identificado nos comentários." />
         )}
 
         {!loading && !error && data && data.themes.length > 0 && (

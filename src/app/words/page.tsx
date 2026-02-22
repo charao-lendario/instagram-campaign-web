@@ -7,9 +7,9 @@ export default function WordsPage() {
     <Suspense
       fallback={
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Word Cloud</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Nuvem de Palavras</h1>
           <p className="mt-2 text-muted-foreground">
-            Palavras mais frequentes nos comentarios.
+            Palavras mais frequentes nos comentários.
           </p>
           <div className="mt-6">
             <LoadingSkeleton variant="chart" />

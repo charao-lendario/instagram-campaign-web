@@ -8,10 +8,10 @@ export default function InsightsPage() {
       fallback={
         <div>
           <h1 className="text-2xl font-bold tracking-tight">
-            Insights Estrategicos
+            Insights Estratégicos
           </h1>
           <p className="mt-2 text-muted-foreground">
-            Sugestoes estrategicas baseadas em dados.
+            Sugestões estratégicas baseadas em dados.
           </p>
           <div className="mt-6 space-y-4">
             <LoadingSkeleton variant="card" />

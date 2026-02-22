@@ -30,7 +30,7 @@ export function OverviewContent() {
       setTriggerMessage("Coleta iniciada com sucesso!")
     } catch (err) {
       if (err instanceof Error && err.message.includes("409")) {
-        setTriggerMessage("Coleta ja em andamento.")
+        setTriggerMessage("Coleta já em andamento.")
       } else {
         setTriggerMessage("Erro ao iniciar coleta.")
       }
@@ -42,9 +42,9 @@ export function OverviewContent() {
   if (loading) {
     return (
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Overview</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Visão Geral</h1>
         <p className="mt-2 text-muted-foreground">
-          Visao geral das metricas de campanha.
+          Visão geral das métricas de campanha.
         </p>
         <div className="mt-6 space-y-6">
           <LoadingSkeleton variant="card" />
@@ -60,9 +60,9 @@ export function OverviewContent() {
   if (error) {
     return (
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Overview</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Visão Geral</h1>
         <p className="mt-2 text-muted-foreground">
-          Visao geral das metricas de campanha.
+          Visão geral das métricas de campanha.
         </p>
         <div className="mt-6">
           <ErrorMessage error={error} onRetry={refetch} />
@@ -74,13 +74,13 @@ export function OverviewContent() {
   if (!data || data.candidates.length === 0) {
     return (
       <div>
-        <h1 className="text-2xl font-bold tracking-tight">Overview</h1>
+        <h1 className="text-2xl font-bold tracking-tight">Visão Geral</h1>
         <p className="mt-2 text-muted-foreground">
-          Visao geral das metricas de campanha.
+          Visão geral das métricas de campanha.
         </p>
         <div className="mt-6">
           <EmptyState
-            message="Nenhum dado disponivel. Inicie uma coleta de dados."
+            message="Nenhum dado disponível. Inicie uma coleta de dados."
             actionLabel={triggering ? undefined : "Iniciar coleta"}
             onAction={triggering ? undefined : handleTriggerScraping}
           />
@@ -118,9 +118,9 @@ export function OverviewContent() {
     <div>
       <div className="flex items-center justify-between">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight">Overview</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Visão Geral</h1>
           <p className="mt-2 text-muted-foreground">
-            Visao geral das metricas de campanha.
+            Visão geral das métricas de campanha.
           </p>
         </div>
         <div className="flex items-center gap-3">
