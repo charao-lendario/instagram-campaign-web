@@ -1,0 +1,102 @@
+import { API_BASE_URL } from "@/lib/constants"
+import type {
+  OverviewData,
+  SentimentTimelineData,
+  WordCloudData,
+  ThemesResponse,
+  PostsResponse,
+  ComparisonData,
+  SuggestionsResponse,
+  ScrapingRunStatus,
+  HealthStatus,
+} from "@/lib/types"
+
+async function apiFetch<T>(path: string, options?: RequestInit): Promise<T> {
+  const res = await fetch(`${API_BASE_URL}${path}`, options)
+  if (!res.ok) {
+    throw new Error(`API error: ${res.status} ${res.statusText}`)
+  }
+  return res.json() as Promise<T>
+}
+
+function buildQuery(params: Record<string, string | number | undefined>): string {
+  const entries = Object.entries(params).filter(
+    (entry): entry is [string, string | number] => entry[1] !== undefined
+  )
+  if (entries.length === 0) return ""
+  const searchParams = new URLSearchParams()
+  for (const [key, value] of entries) {
+    searchParams.set(key, String(value))
+  }
+  return `?${searchParams.toString()}`
+}
+
+// --- Analytics endpoints ---
+
+export async function fetchOverview(): Promise<OverviewData> {
+  return apiFetch<OverviewData>("/api/v1/analytics/overview")
+}
+
+export async function fetchSentimentTimeline(params?: {
+  candidate_id?: string
+  start_date?: string
+  end_date?: string
+}): Promise<SentimentTimelineData> {
+  const query = buildQuery(params ?? {})
+  return apiFetch<SentimentTimelineData>(`/api/v1/analytics/sentiment-timeline${query}`)
+}
+
+export async function fetchWordCloud(params?: {
+  candidate_id?: string
+}): Promise<WordCloudData> {
+  const query = buildQuery(params ?? {})
+  return apiFetch<WordCloudData>(`/api/v1/analytics/wordcloud${query}`)
+}
+
+export async function fetchThemes(params?: {
+  candidate_id?: string
+}): Promise<ThemesResponse> {
+  const query = buildQuery(params ?? {})
+  return apiFetch<ThemesResponse>(`/api/v1/analytics/themes${query}`)
+}
+
+export async function fetchPosts(params?: {
+  candidate_id?: string
+  sort_by?: string
+  order?: string
+  limit?: number
+  offset?: number
+}): Promise<PostsResponse> {
+  const query = buildQuery(params ?? {})
+  return apiFetch<PostsResponse>(`/api/v1/analytics/posts${query}`)
+}
+
+export async function fetchComparison(): Promise<ComparisonData> {
+  return apiFetch<ComparisonData>("/api/v1/analytics/comparison")
+}
+
+export async function fetchSuggestions(params?: {
+  candidate_id?: string
+}): Promise<SuggestionsResponse> {
+  return apiFetch<SuggestionsResponse>("/api/v1/analytics/suggestions", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: params?.candidate_id
+      ? JSON.stringify({ candidate_id: params.candidate_id })
+      : JSON.stringify({}),
+  })
+}
+
+// --- Scraping endpoint ---
+
+export async function triggerScraping(): Promise<ScrapingRunStatus> {
+  return apiFetch<ScrapingRunStatus>("/api/v1/scraping/run", {
+    method: "POST",
+  })
+}
+
+// --- Health endpoint ---
+
+export async function fetchHealth(): Promise<HealthStatus> {
+  return apiFetch<HealthStatus>("/health")
+}
