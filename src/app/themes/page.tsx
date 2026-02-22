@@ -1,10 +1,23 @@
+import { Suspense } from "react"
+import { LoadingSkeleton } from "@/components/shared/loading-skeleton"
+import { ThemesContent } from "@/app/themes/themes-content"
+
 export default function ThemesPage() {
   return (
-    <div>
-      <h1 className="text-2xl font-bold tracking-tight">Themes</h1>
-      <p className="mt-2 text-muted-foreground">
-        Distribuicao de temas por candidato. Em breve.
-      </p>
-    </div>
+    <Suspense
+      fallback={
+        <div>
+          <h1 className="text-2xl font-bold tracking-tight">Temas</h1>
+          <p className="mt-2 text-muted-foreground">
+            Distribuicao de temas por candidato.
+          </p>
+          <div className="mt-6">
+            <LoadingSkeleton variant="chart" />
+          </div>
+        </div>
+      }
+    >
+      <ThemesContent />
+    </Suspense>
   )
 }

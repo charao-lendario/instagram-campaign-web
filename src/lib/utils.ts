@@ -49,6 +49,33 @@ export function formatDateMedium(iso: string): string {
   }).format(d)
 }
 
+// --- Theme Label Formatting ---
+
+const THEME_LABELS: Record<string, string> = {
+  saude: "Saude",
+  seguranca: "Seguranca",
+  educacao: "Educacao",
+  economia: "Economia",
+  infraestrutura: "Infraestrutura",
+  corrupcao: "Corrupcao",
+  emprego: "Emprego",
+  meio_ambiente: "Meio Ambiente",
+  outros: "Outros",
+}
+
+/**
+ * Format a theme_category enum value into a human-readable label.
+ * Handles known themes via map and unknown themes via fallback formatting.
+ */
+export function formatThemeLabel(theme: string): string {
+  return (
+    THEME_LABELS[theme] ??
+    theme
+      .replace(/_/g, " ")
+      .replace(/\b\w/g, (c) => c.toUpperCase())
+  )
+}
+
 /**
  * Resolve a CandidateFilter URL param value to a candidate_id UUID.
  * Uses the overview data (candidates array) for UUID lookup.
