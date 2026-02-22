@@ -6,6 +6,7 @@ import type {
   ThemesResponse,
   PostsResponse,
   ComparisonData,
+  CompetitiveAnalysisData,
   SuggestionsResponse,
   ScrapingRunStatus,
   HealthStatus,
@@ -85,6 +86,16 @@ export async function fetchSuggestions(params?: {
       ? JSON.stringify({ candidate_id: params.candidate_id })
       : JSON.stringify({}),
   })
+}
+
+// --- Competitive Analysis ---
+
+export async function fetchCompetitiveAnalysis(params?: {
+  our_username?: string
+  competitor_username?: string
+}): Promise<CompetitiveAnalysisData> {
+  const query = buildQuery(params ?? {})
+  return apiFetch<CompetitiveAnalysisData>(`/api/v1/analytics/competitive${query}`)
 }
 
 // --- Scraping endpoint ---

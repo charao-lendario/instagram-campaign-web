@@ -140,6 +140,28 @@ export interface SuggestionsResponse {
   }
 }
 
+// --- Competitive Analysis ---
+
+export interface CompetitiveMetrics {
+  username: string
+  display_name: string | null
+  total_posts: number
+  total_comments: number
+  average_sentiment_score: number
+  total_engagement: number
+  avg_likes_per_post: number
+  avg_comments_per_post: number
+  sentiment_distribution: SentimentDistribution
+  top_themes: Array<{ theme: string; count: number }>
+}
+
+export interface CompetitiveAnalysisData {
+  our_candidate: CompetitiveMetrics | null
+  competitor: CompetitiveMetrics | null
+  engagement_advantage: number
+  sentiment_advantage: number
+}
+
 // --- Scraping ---
 
 export interface ScrapingRunStatus {

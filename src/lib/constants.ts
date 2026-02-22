@@ -22,11 +22,15 @@ export const CANDIDATE_OPTIONS: Array<{ value: CandidateFilter; label: string }>
   { value: 'sheila', label: 'Delegada Sheila' },
 ] as const
 
+export const COMPETITOR_USERNAME = 'delegadaione'
+export const COMPETITOR_DISPLAY = 'Delegada Ione'
+
 export const NAV_TABS = [
   { label: 'Painel', href: '/overview' },
   { label: 'Termômetro', href: '/sentiment' },
   { label: 'Temas Quentes', href: '/themes' },
   { label: 'Posts', href: '/posts' },
   { label: 'Perfil', href: '/comparison' },
+  { label: 'Concorrência', href: '/competitor' },
   { label: 'Estratégia IA', href: '/insights' },
 ] as const
